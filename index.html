@@ -1,25 +1,64 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Kaizen @1</title>
-</head>
-<body>
-  <iframe 
-    src="https://script.google.com/macros/s/AKfycbxxn5Vr9FfF9HAnfTIDGJAymTwgglLAKZnfq_h9to-FXK_hA-BkqepgrBut3U9pLCv5tA/exec"
-    width="100%"
-    height="100%"
-    allowfullscreen="true"
-    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none;">
-  </iframe>
 
-  <script>
-    window.onload = function() {
-      document.querySelector('iframe')
-        .requestFullscreen()
-        .catch((err) => {
-          console.error('Error attempting to enable full-screen mode:', err.message);
-        });
-    };
-  </script>
+<head>
+    <title>Kaizen @1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0a0a0a;
+            /* Match your app background */
+        }
+
+        #app-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 
+    The src here is a placeholder. 
+    The script below will update it with the correct ID.
+  -->
+    <iframe id="app-frame" src="" allow="camera; microphone; fullscreen; autoplay" allowfullscreen>
+    </iframe>
+
+    <script>
+        // 1. Your Apps Script Deployment URL
+        const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxn5Vr9FfF9HAnfTIDGJAymTwgglLAKZnfq_h9to-FXK_hA-BkqepgrBut3U9pLCv5tA/exec";
+
+        // 2. Get the parameters from the Browser URL (e.g. ?id=123)
+        const queryString = window.location.search;
+
+        // 3. Set the Iframe Source
+        const frame = document.getElementById('app-frame');
+
+        // Combine the Base URL with the dynamic ID/parameters
+        // If the URL already has parameters, we append correctly
+        if (queryString) {
+            // If deployed URL already has '?', assume we append with '&', otherwise '?'
+            const separator = APP_SCRIPT_URL.includes('?') ? '&' : '?';
+            // Remove the leading '?' from queryString as we handle it with separator logic if simpler, 
+            // but standard is just BASE + queryString if BASE has no params.
+            // safest way:
+            frame.src = APP_SCRIPT_URL + queryString;
+        } else {
+            frame.src = APP_SCRIPT_URL; // Load without ID (will likely show Access Denied page)
+        }
+
+        // Optional: Log for debugging
+        console.log("Loading App from:", frame.src);
+    </script>
 </body>
+
 </html>
